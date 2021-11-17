@@ -293,7 +293,7 @@ const DetailModal: React.FC<DetailModalProps> = ({ getData }) => {
                   </IconButton>
                 </Tooltip>
               </LinkPhoneStyled>
-              <LinkStyled
+              <a
                 target="__blank"
                 rel="no-referrer"
                 href={`https://api.whatsapp.com/send?phone=55${dealDetail.contact?.phone}`}
@@ -308,7 +308,7 @@ const DetailModal: React.FC<DetailModalProps> = ({ getData }) => {
                     <i className={`fa fa-whatsapp`}></i>
                   </IconButton>
                 </Tooltip>
-              </LinkStyled>
+              </a>
             </div>
           </ActionsDealDetailCardContainer>
           <br />
