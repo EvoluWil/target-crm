@@ -29,7 +29,6 @@ const DeleteContactModal = ({ id }) => {
     city: "",
     email: "",
     phone: "12000000000",
-    tag: "null",
   });
 
   const deleteContact = async () => {
