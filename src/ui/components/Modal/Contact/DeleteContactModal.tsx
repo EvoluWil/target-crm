@@ -15,7 +15,6 @@ import ContactContext from "contexts/ContactContext";
 import { IContact } from "types/Contact";
 import ContactService from "data/services/ContactService";
 import { useContactPage } from "data/services/hooks/PageHooks/ContactHook";
-import { getBrazilianStates, IState } from "data/services/BrazilianStatesApi";
 import Delete from "@material-ui/icons/Delete";
 
 const DeleteContactModal = ({ id }) => {
@@ -34,18 +33,16 @@ const DeleteContactModal = ({ id }) => {
     tag: "null",
   });
 
-
   const deleteContact = async () => {
     try {
-      await ContactService.deleteContact(id)
+      await ContactService.deleteContact(id);
 
-      await getContacts()
-      useDeleteContactModal()
+      await getContacts();
+      useDeleteContactModal();
     } catch (error) {
       console.log(error.message);
     }
   };
-
 
   const body = (
     <ModalContainer>
@@ -57,16 +54,18 @@ const DeleteContactModal = ({ id }) => {
         <i className="fa fa-times" aria-hidden="true"></i>
       </CloseButtonStyled>
 
-      <Title title="Deletar contato" subtitle={
-        <>
-
-          <p>
-            <strong>Tem certeza que deseja deletar o contato selecionado?</strong>
-          </p>
-        </>
-      }
+      <Title
+        title="Deletar contato"
+        subtitle={
+          <>
+            <p>
+              <strong>
+                Tem certeza que deseja deletar o contato selecionado?
+              </strong>
+            </p>
+          </>
+        }
       />
-
 
       <Button
         variant="contained"

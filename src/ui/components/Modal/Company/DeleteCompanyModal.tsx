@@ -15,7 +15,6 @@ import ContactContext from "contexts/ContactContext";
 import { IContact } from "types/Contact";
 import ContactService from "data/services/ContactService";
 import { useContactPage } from "data/services/hooks/PageHooks/ContactHook";
-import { getBrazilianStates, IState } from "data/services/BrazilianStatesApi";
 import Delete from "@material-ui/icons/Delete";
 import CompanyContext from "contexts/CompanyContext";
 import { useCompanyPage } from "data/services/hooks/PageHooks/CompanyHook";
