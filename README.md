@@ -67,3 +67,17 @@ Para acessibilidade e experiência do usuário utilizamos como referência o man
 ## CONTRIBUIÇÃO
 
 - "Features", "issues reports" e "bug fixes" são bem vindos!
+
+
+### 👨‍💻 Equipe
+
+| Aluno(a)         | Função           | GitHub                                                         | LinkedIn                                              |
+| ---------------- | ---------------- | -------------------------------------------------------------- | ----------------------------------------------------- |
+|__Willian Rodrigues__| *Developer Team* | [![](https://bit.ly/3f9Xo0P)](https://github.com/Willian-Rodrigues) | [![](https://bit.ly/2P1ZogM)](https://www.linkedin.com/in/willianrsilva/)| 
+|__Debora Faria__  | *Developer Team*  | [![](https://bit.ly/3f9Xo0P)](https://github.com/deborafaria01)| [![](https://bit.ly/2P1ZogM)](https://bit.ly/2QwcT8R) |
+|__Hariel Thums__  | *Developer Team* | [![](https://bit.ly/3f9Xo0P)](https://github.com/HarielThums)  | [![](https://bit.ly/2P1ZogM)](https://bit.ly/3f9bjUH) |
+|__Mariana Assis__ | *Scrum Master* | [![](https://bit.ly/3f9Xo0P)](https://github.com/mariana299)   | [![](https://bit.ly/2P1ZogM)](https://bit.ly/3foKv3d) |
+|__Vinícius Oliveira__| *Product Owner*| [![](https://bit.ly/3f9Xo0P)](https://github.com/vinicius-hso) | [![](https://bit.ly/2P1ZogM)](https://bit.ly/3fdl0BE) |
+
+  
+
