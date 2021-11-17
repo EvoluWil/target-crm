@@ -20,7 +20,6 @@ import Delete from "@material-ui/icons/Delete";
 const DeleteContactModal = ({ id }) => {
   const { deleteContactModal, useDeleteContactModal, getContacts } =
     useContext(ContactContext);
-  const [states, setStates] = useState<IState[]>([]);
 
   const [time, setTime] = useState(null);
   const [data, setData] = useState<IContact>({

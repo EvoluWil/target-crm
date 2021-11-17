@@ -23,7 +23,6 @@ const DeleteCompanyModal = ({ id }) => {
   const { deleteCompanyModal, useDeleteCompanyModal } =
     useContext(CompanyContext);
   const { deleteCompany } = useCompanyPage();
-  const [states, setStates] = useState<IState[]>([]);
 
   const [time, setTime] = useState(null);
   const [data, setData] = useState<IContact>({
