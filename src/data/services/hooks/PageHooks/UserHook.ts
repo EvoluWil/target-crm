@@ -3,7 +3,7 @@ import UserService from "data/services/UserService";
 import { IUser } from "types/User";
 import AuthContext from "contexts/AuthContext";
 import { useRouter } from "next/dist/client/router";
-import { useNavBarComponent } from "../componentHooks/NavBarHook";
+import { useNavBarComponent } from "data/services/hooks/componentHooks/NavBarHook";
 
 // import CompanyService from "data/services/CompanyService";
 
