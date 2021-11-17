@@ -3,13 +3,11 @@ import UserService from "data/services/UserService";
 import { IUser } from "types/User";
 import AuthContext from "contexts/AuthContext";
 import { useRouter } from "next/dist/client/router";
-import { useNavBarComponent } from "data/services/hooks/componentHooks/NavBarHook";
 
 // import CompanyService from "data/services/CompanyService";
 
 export const useUserPage = () => {
   //DECLARAÇÃO DAS VARIAVEIS
-  const { isAdmin } = useNavBarComponent();
   const route = useRouter();
   const [users, setUsers] = useState([]);
   const [timer, setTimer] = useState(null);
@@ -27,12 +25,12 @@ export const useUserPage = () => {
     }
     setTimer(
       setTimeout(() => {
-        if (!isAdmin) {
+        if (!"isAdmin") {
           route.push("/account");
         }
       }, 1000)
     );
-  }, [isAdmin]);
+  }, []);
 
   useEffect(() => {
     if (!users.length) {
