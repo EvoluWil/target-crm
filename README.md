@@ -1,34 +1,69 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# <img src="https://github.com/vinicius-hso/api-sem3-target-crm/blob/development/target/public/favicon.svg" width="30"/> TARGET CRM
+Aplicação de gerenciamento de relações com clientes
 
-## Getting Started
+Nesta branch estão dispostos todos os códigos em ambiente de desenvolvimento da Aplicação TARGET utilizando TypeScript, Node.js, e React.
 
-First, run the development server:
+A aquitetura da aplicação é explicada pela seguite imagem:
+<p align="center">
+ <img src="https://github.com/vinicius-hso/api-sem3-target-crm/blob/Sprint-1/Documentation/arquitetura-da-aplicação.jpeg"/></p>
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## AMBIENTE DE DESENVOLVIMENTO:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Requerimentos do Sistema
+- [Node.js](https://nodejs.org/en/download/)
+- [docker](https://www.docker.com) e [docker-compose](https://docs.docker.com/compose)
+- [yarn](https://yarnpkg.com/en)
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+### Inicializando o projeto - BACKEND:
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Na pasta "backend" via terminal:
+  - rode `yarn` para instalar dependências
+  - crie um aquivo na raiz do projeto chamado `.env` copie os valores do `.env.exemple` para ele;
+  - rode `docker-compose up -d`;
+  - rode `yarn typeorm migration:run`;
+  - rode `yarn dev`;
+  - acesse `http://localhost:3333`;
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+<p align="center">
+ <img src="https://github.com/vinicius-hso/api-sem3-target-crm/blob/Sprint-1/Images/localhost_3333.png"/></p>
 
-## Learn More
+### Inicializando o projeto - FRONTEND:
 
-To learn more about Next.js, take a look at the following resources:
+Na pasta "target" via terminal:
+  - rode `yarn` para instalar dependências
+  - rode `yarn dev`;
+  - acesse `http://localhost:3000`;
+  
+<p align="center">
+ <img src="https://github.com/vinicius-hso/api-sem3-target-crm/blob/Sprint-1/Images/localhost_3000.png"/></p>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ESTRUTURA DO PROJETO
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Para a organização do projeto foram utilizadas [Referência de Projeto em Typescript](https://www.typescriptlang.org/docs/handbook/project-references.html)
 
-## Deploy on Vercel
+Para acessibilidade e experiência do usuário utilizamos como referência o manual [Web Content Accessibility Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+<p align="center">
+ <img src="https://github.com/vinicius-hso/api-sem3-target-crm/blob/Sprint-2/Images/Estrutura_development.png"/></p>
+ 
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## TECNOLOGIAS UTILIZADAS
+- [TypeScript](http://www.typescriptlang.org/)
+- Backend
+    - [Node.js](https://nodejs.org)
+    - [Express](https://expressjs.com/)
+       - [PostgreSQL](https://www.postgresql.org/) como SGBD
+        - [TypeORM](http://typeorm.io) para código primário e migrações do Banco de dados
+- Frontend
+    - [React](https://reactjs.org/)
+    - [UI Biblioteca](https://material-ui.com/pt/) para estilização dos componentes
+    - [NextJS](https://nextjs.org) para sistema de rotas
+- Developer environment
+    - [docker](https://www.docker.com/) e [docker-compose](https://docs.docker.com/compose)
+    - VSCode
+- Testing
+    - Testes funcionais da aplicação e apropriada documentação
+
+## CONTRIBUIÇÃO
+
+- "Features", "issues reports" e "bug fixes" são bem vindos!
