@@ -9,8 +9,8 @@ import {
 import Title from "ui/components/Title/Title";
 import { useRouter } from "next/dist/client/router";
 import Dialog from "ui/components/Dialog/Dialog";
-import { useRecoverPage } from "data/services/hooks/PageHooks/RecoverPageHook";
 import Head from "next/head";
+import { useRecoverPage } from "data/services/hooks/PageHooks/recoverPageHook";
 
 function PassRecover() {
   const currentRouter = useRouter();
