@@ -17,7 +17,7 @@ import { ButtonsContainer } from "../ModalStyles/ButtonsContainer";
 import { usePipelineComponent } from "data/services/hooks/componentHooks/PipelineHook";
 import { useDealPage } from "data/services/hooks/PageHooks/DealHook";
 import { StatusTypes } from "types/Status";
-import { useNavBarComponent } from "data/services/hooks/componentHooks/NavBarHook";
+import { useNavBarComponent } from "data/services/hooks/componentHooks/navBarHook";
 import { formatValue } from "data/utils/formatValue";
 import Dialog from "ui/components/Dialog/Dialog";
 

@@ -15,7 +15,7 @@ import {
 import theme from "ui/theme/theme";
 import { DrawerWeb } from "./Drawers/DrawerWeb";
 import { DrawerMobile } from "./Drawers/DrawerMobile";
-import { useNavBarComponent } from "data/services/hooks/componentHooks/NavBarHook";
+import { useNavBarComponent } from "data/services/hooks/componentHooks/navBarHook";
 
 interface Props {
   window?: () => Window;
