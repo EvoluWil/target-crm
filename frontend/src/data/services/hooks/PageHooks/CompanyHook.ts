@@ -15,9 +15,7 @@ export const useCompanyPage = () => {
 
   useEffect(() => {
     if (!companies.length) {
-      setTimeout(() => {
-        getData();
-      }, 500);
+      getData();
     }
   }, []);
 
@@ -88,6 +86,7 @@ export const useCompanyPage = () => {
 
   return {
     companies,
+    setCompanies,
     formatCompaniesToSelect,
     filteredCompany,
     removeFiltered,

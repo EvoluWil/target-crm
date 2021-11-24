@@ -19,7 +19,13 @@ import { GetServerSideProps } from "next";
 import { parseCookies } from "data/services/cookie";
 import { serviceApi } from "data/services/ServiceApi";
 
-function CompanyPage() {
+interface CompanyPageProps {
+  token: string;
+}
+
+function CompanyPage({ token }: CompanyPageProps) {
+  serviceApi.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
   const {
     companies,
     filteredCompany,
@@ -164,10 +170,14 @@ export const getServerSideProps: GetServerSideProps = async ({
 }): Promise<any> => {
   const data = parseCookies(req);
   let token: string = "";
+  let user: any = {};
 
   Object.keys(data).find((key, i) => {
-    if (key === "@target:user") {
+    if (key === "@target:token") {
       token = Object.values(data)[i];
+    }
+    if (key === "@target:user") {
+      user = Object.values(data)[i];
     }
   });
   if (!token?.length && resolvedUrl !== "/login") {
@@ -180,7 +190,9 @@ export const getServerSideProps: GetServerSideProps = async ({
   } else {
     try {
       serviceApi.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      await serviceApi.get("/auth/faw1efawe3f14aw8es3v6awer51xx3/check");
+      await serviceApi.get("/auth/faw1efawe3f14aw8es3v6awer51xx3/check", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
     } catch (e) {
       return {
         redirect: {
@@ -191,9 +203,13 @@ export const getServerSideProps: GetServerSideProps = async ({
     }
   }
 
+  if (user) {
+    user = JSON.parse(user);
+  }
   return {
     props: {
-      session: "",
+      user,
+      token,
     },
   };
 };

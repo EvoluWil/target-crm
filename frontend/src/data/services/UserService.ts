@@ -46,17 +46,17 @@ class UserService {
     }
   }
 
-  async editUser(userId: string, user: IUser): Promise<IResponse> {
+  async editUser(userId: string, user: IUser): Promise<any> {
     try {
       await api.put(`/user/${userId}`, user);
+      toast.success("Usuário atualizado com sucesso.");
 
-      return { status: "success", message: "Usuário editado com sucesso!" };
+      return { status: "ok" };
     } catch (error) {
-      return {
-        status: "error",
-        message:
-          "Ops! algo deu errado, verifique sua conexão e tente novamente.",
-      };
+      toast.error(
+        "Ops! algo deu errado, verifique sua conexão e tente novamente."
+      );
+      return;
     }
   }
 
@@ -66,21 +66,20 @@ class UserService {
   ): Promise<IResponse> {
     try {
       await api.put(`/user/update-password/${userId}`, data);
-
-      return { status: "success", message: "Senha editada com sucesso!" };
+      toast.success("Senha atualizada com sucesso.");
+      return;
     } catch (error) {
-      return {
-        status: "error",
-        message:
-          "Ops! algo deu errado, verifique sua conexão e tente novamente.",
-      };
+      toast.error(
+        "Ops! algo deu errado, verifique sua conexão e tente novamente."
+      );
+      return;
     }
   }
 
   async deleteUser(userId: string): Promise<IUser> {
     try {
       const { data } = await api.delete(`/user/${userId}`);
-      toast.success("Usuário Excluído com sucesso!");
+      toast.success("Usuário deletado com sucesso!");
       return data;
     } catch (error) {
       toast.error(

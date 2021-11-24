@@ -7,6 +7,7 @@ import Head from "next/head";
 import { GetServerSideProps } from "next";
 import { parseCookies } from "data/services/cookie";
 import { serviceApi } from "data/services/ServiceApi";
+import { toast } from "react-toastify";
 
 type Passwords = {
   oldPassword: string;
@@ -14,15 +15,16 @@ type Passwords = {
   confirmNewPassword: string;
 };
 
-function Account() {
+interface AccountProps {
+  user: IUser;
+  token: string;
+}
+
+function Account({ user, token }: AccountProps) {
+  serviceApi.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   const [hasEdit, setHasEdit] = useState(false);
   const [hasEditPassword, setHasEditPassword] = useState(false);
-  const { user, editUser, editUserPassword } = useSessionUserPage();
-
-  const [status, setStatus] = useState<{ status: string; message: string }>({
-    status: "",
-    message: "",
-  });
+  const { editUser, editUserPassword } = useSessionUserPage();
 
   const [data, setData] = useState<IUser>({
     id: "",
@@ -62,45 +64,43 @@ function Account() {
             hasEdit={hasEdit}
             saveEdit={async (data) => {
               setHasEdit(false);
-              setStatus(await editUser(data.id, data));
-
-              setTimeout(() => {
-                setStatus({
-                  status: "",
-                  message: "",
-                });
-              }, 3000);
+              editUser(data.id, data);
             }}
             password={passwords}
             setUserPassword={(passwords) => setPasswords(passwords)}
-            onClickPassword={() => setHasEditPassword(!hasEditPassword)}
+            onClickPassword={() => {
+              setHasEditPassword(!hasEditPassword);
+              setPasswords({
+                oldPassword: "",
+                newPassword: "",
+                confirmNewPassword: "",
+              });
+            }}
             hasEditPassword={hasEditPassword}
             saveEditPassword={async (passwords) => {
-              if (passwords.newPassword !== passwords.confirmNewPassword) {
-                setHasEditPassword(false);
-                setStatus(await editUserPassword("", ""));
-                setTimeout(() => {
-                  setStatus({
-                    status: "",
-                    message: "",
+              if (
+                passwords?.oldPassword?.length >= 6 &&
+                passwords.newPassword.length >= 6 &&
+                passwords.confirmNewPassword.length >= 6
+              ) {
+                if (passwords.newPassword !== passwords.confirmNewPassword) {
+                  setHasEditPassword(false);
+                  await editUserPassword("", "");
+                  return null;
+                } else {
+                  checkPasswords();
+                  setHasEditPassword(false);
+                  await editUserPassword(data.id, passwords);
+                  setPasswords({
+                    oldPassword: "",
+                    newPassword: "",
+                    confirmNewPassword: "",
                   });
-                }, 3000);
-                return null;
+                }
               } else {
-                checkPasswords();
-                setHasEditPassword(false);
-                setStatus(await editUserPassword(data.id, passwords));
-                setPasswords({
-                  oldPassword: "",
-                  newPassword: "",
-                  confirmNewPassword: "",
-                });
-                setTimeout(() => {
-                  setStatus({
-                    status: "",
-                    message: "",
-                  });
-                }, 3000);
+                toast.warning(
+                  "Preencha os campos corretamente, e tente novamente! "
+                );
               }
             }}
           />
@@ -117,10 +117,14 @@ export const getServerSideProps: GetServerSideProps = async ({
 }): Promise<any> => {
   const data = parseCookies(req);
   let token: string = "";
+  let user: any = {};
 
   Object.keys(data).find((key, i) => {
-    if (key === "@target:user") {
+    if (key === "@target:token") {
       token = Object.values(data)[i];
+    }
+    if (key === "@target:user") {
+      user = Object.values(data)[i];
     }
   });
   if (!token?.length && resolvedUrl !== "/login") {
@@ -133,7 +137,9 @@ export const getServerSideProps: GetServerSideProps = async ({
   } else {
     try {
       serviceApi.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      await serviceApi.get("/auth/faw1efawe3f14aw8es3v6awer51xx3/check");
+      await serviceApi.get("/auth/faw1efawe3f14aw8es3v6awer51xx3/check", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
     } catch (e) {
       return {
         redirect: {
@@ -144,9 +150,13 @@ export const getServerSideProps: GetServerSideProps = async ({
     }
   }
 
+  if (user) {
+    user = JSON.parse(user);
+  }
   return {
     props: {
-      session: "",
+      user,
+      token,
     },
   };
 };

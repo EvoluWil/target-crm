@@ -29,7 +29,7 @@ const Welcome = () => {
       <ImageContainer>
         <img
           src="welcome.png"
-          alt="Seja bem vindo!"
+          alt="welcome"
           height="250px"
           width="auto"
           text-align="center"

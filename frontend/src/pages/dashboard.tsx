@@ -19,12 +19,12 @@ import ConversionRateCard from "../ui/components/ConversionRateCardComponent/Con
 import { useDashboardPage } from "../data/services/hooks/PageHooks/DashboardHook";
 import Title from "ui/components/Title/Title";
 import { formatArray } from "data/utils/formatArray";
-import moment from "moment";
 import Head from "next/head";
 import { DynamicTestLineCharts } from "data/services/servicesComponents/DynamicTestLineCharts";
 import { GetServerSideProps } from "next";
 import { parseCookies } from "data/services/cookie";
 import { serviceApi } from "data/services/ServiceApi";
+import { DealTypes } from "types/Deal";
 
 interface BarChartsProps {
   title: string;
@@ -32,16 +32,26 @@ interface BarChartsProps {
   series: { name: string; data: number[] }[];
 }
 
-interface LineChartsProps {
-  series: any[];
-  xaxis: any[];
+interface DashboardProps {
+  allDeals: DealTypes[];
+  token: string;
 }
 
-interface TestLineChartsProps {
-  series: any[];
-}
+function Dashboard({ allDeals, token }: DashboardProps) {
+  serviceApi.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-function Dashboard() {
+  useEffect(() => {
+    if (allDeals) {
+      getDealsInfo(allDeals);
+      getConversionRateCardInfo(allDeals);
+      getTestLineChartData(allDeals);
+    }
+  }, []);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   const {
     wonDeals,
     lostDeals,
@@ -53,6 +63,9 @@ function Dashboard() {
     getConversionRateCardInfo,
     getData,
     deals,
+    // setAllDeals,
+    getTestLineChartData,
+    testLineChartData,
   } = useDashboardPage();
 
   //* Mock para visualização {
@@ -162,30 +175,6 @@ function Dashboard() {
     series: [],
   });
 
-  const [lineChartData, setLineChartsData] = useState<LineChartsProps>({
-    xaxis: [],
-    series: [],
-  });
-
-  const [testLineChartData, setTestLineChartsData] =
-    useState<TestLineChartsProps>({
-      series: [],
-    });
-
-  useEffect(() => {
-    if (!dealsInfo?.meanValue) {
-      getDealsInfo();
-    }
-
-    if (!conversionRateInfo?.conversionRate) {
-      getConversionRateCardInfo();
-    }
-  }, []);
-
-  useEffect(() => {
-    getData();
-  }, []);
-
   const getChartData = (chartType: string, valueType: string) => {
     const data = formatArray(deals, chartType);
     setChartsData({
@@ -217,63 +206,8 @@ function Dashboard() {
     });
   };
 
-  const getLineCharData = () => {
-    const dat = deals;
-    let wons = { name: "Ganha", data: [] };
-    let lost = { name: "Perdida", data: [] };
-    let xaxisValues = [];
-    mock.map((d) => {
-      switch (d.status) {
-        case "WON":
-          wons.data.push((d.value / 100).toFixed(2));
-          xaxisValues.push(d.updatedAt);
-          console.log(moment(d.updatedAt).format("ll"));
-          break;
-        case "LOST":
-          lost.data.push((d.value / 100).toFixed(2));
-          xaxisValues.push(d.updatedAt);
-          break;
-      }
-    });
-    setLineChartsData({
-      xaxis: xaxisValues,
-      series: [wons, lost],
-    });
-  };
-
-  const getTestLineChartData = () => {
-    let wons = { name: "Ganhas", data: [] };
-    let lost = { name: "Perdidas", data: [] };
-    let x = "";
-    let y = "";
-    let t = "";
-
-    wonDeals.map((d) => {
-      t = moment(d.updatedAt).format("L");
-      x = t.toString() + " GMT";
-      y = (d.value / 100).toFixed(2);
-      wons.data.push({ x, y });
-    });
-
-    lostDeals.map((d) => {
-      t = moment(d.updatedAt).format("L");
-      x = t.toString() + " GMT";
-      y = (d.value / 100).toFixed(2);
-      lost.data.push({ x, y });
-    });
-
-    wons.data.sort((a, b) => new Date(b.x).getTime() - new Date(a.x).getTime());
-    lost.data.sort((a, b) => new Date(b.x).getTime() - new Date(a.x).getTime());
-
-    setTestLineChartsData({
-      series: [wons, lost],
-    });
-  };
-
   useEffect(() => {
     getChartData("Empresa", "quantidade");
-    getLineCharData();
-    getTestLineChartData();
   }, [deals]);
 
   const setFilter = () => {
@@ -294,7 +228,7 @@ function Dashboard() {
         <Title style={{ textAlign: "left" }} title="Dashboard"></Title>
 
         <DatePickerContainer>
-          <p> Personalize o grafico</p>
+          <p> Personalize seu gráfico</p>
           <div className="buttonEditChart">
             <ToggleButtonGroup
               color="primary"
@@ -309,6 +243,7 @@ function Dashboard() {
             >
               <ToggleButton value="Empresa">Empresas</ToggleButton>
               <ToggleButton value="Vendedor">Vendedores</ToggleButton>
+              <ToggleButton value="Pipeline">Pipelines</ToggleButton>
             </ToggleButtonGroup>
             <ToggleButtonGroup
               color="primary"
@@ -398,7 +333,9 @@ function Dashboard() {
 
       <div style={{ width: "100%" }}>
         <ChartsContainer>
-          <DynamicTestLineCharts series={testLineChartData.series} />
+          {testLineChartData.series[0] && (
+            <DynamicTestLineCharts series={testLineChartData?.series} />
+          )}
         </ChartsContainer>
       </div>
     </DashboardPageContainer>
@@ -412,9 +349,10 @@ export const getServerSideProps: GetServerSideProps = async ({
 }): Promise<any> => {
   const data = parseCookies(req);
   let token: string = "";
+  let allDeals: any = [];
 
   Object.keys(data).find((key, i) => {
-    if (key === "@target:user") {
+    if (key === "@target:token") {
       token = Object.values(data)[i];
     }
   });
@@ -428,7 +366,13 @@ export const getServerSideProps: GetServerSideProps = async ({
   } else {
     try {
       serviceApi.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      await serviceApi.get("/auth/faw1efawe3f14aw8es3v6awer51xx3/check");
+      await serviceApi.get("/auth/faw1efawe3f14aw8es3v6awer51xx3/check", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const { data } = await serviceApi.get(
+        "/deal?with=pipeline,company,contact"
+      );
+      allDeals = data;
     } catch (e) {
       return {
         redirect: {
@@ -438,10 +382,10 @@ export const getServerSideProps: GetServerSideProps = async ({
       };
     }
   }
-
   return {
     props: {
-      session: "",
+      allDeals,
+      token,
     },
   };
 };

@@ -5,36 +5,14 @@ import { useRouter } from "next/dist/client/router";
 
 export const useUserPage = () => {
   //DECLARAÇÃO DAS VARIAVEIS
-  const isAdmin = true;
   const route = useRouter();
   const [users, setUsers] = useState([]);
-  const [timer, setTimer] = useState(null);
   const [removeFilteredUsers, setFilteredUsers] = useState([]);
   const [formatUsersToSelect, setFormat] = useState([]);
   const [createUserModalState, setCreateUserModalState] =
     useState<boolean>(false);
 
   const [userDetail, setUserDetail] = useState<IUser>({});
-
-  useEffect(() => {
-    if (timer) {
-      clearTimeout(timer);
-      setTimer(null);
-    }
-    setTimer(
-      setTimeout(() => {
-        if (!isAdmin) {
-          route.push("/account");
-        }
-      }, 1000)
-    );
-  }, [isAdmin]);
-
-  useEffect(() => {
-    if (!users.length) {
-      getData();
-    }
-  }, []);
 
   const formatListToSelect = (users: any[]): any => {
     setFormat(
@@ -93,6 +71,7 @@ export const useUserPage = () => {
 
   return {
     users,
+    setUsers,
     formatUsersToSelect,
     filteredUser,
     removeFiltered,

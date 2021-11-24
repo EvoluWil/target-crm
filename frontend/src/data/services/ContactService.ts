@@ -30,7 +30,7 @@ class ContactService {
   async deleteContact(id: string): Promise<string> {
     try {
       const response = await api.delete(`/contact/${id}`);
-      toast.success("Contato excluído com sucesso!");
+      toast.success("Contato deletado com sucesso!");
       return response.data;
     } catch (error) {
       toast.error(
@@ -40,7 +40,7 @@ class ContactService {
     }
   }
 
-  async createContact({ name, email, phone, city, state, company }) {
+  async createContact({ name, email, phone, city, state, company, picture }) {
     const body = {
       name,
       email,
@@ -48,6 +48,7 @@ class ContactService {
       city,
       state,
       company,
+      picture,
     };
 
     try {
@@ -62,7 +63,16 @@ class ContactService {
     }
   }
 
-  async updateContact({ id, name, email, phone, city, state, company }) {
+  async updateContact({
+    id,
+    name,
+    email,
+    phone,
+    city,
+    state,
+    company,
+    picture,
+  }) {
     const body = {
       name,
       email,
@@ -70,11 +80,12 @@ class ContactService {
       city,
       state,
       company,
+      picture,
     };
 
     try {
       const { data } = await api.put(`/contact/${id}?with=company`, body);
-      toast.success("Contato atualziado com sucesso!");
+      toast.success("Contato atualizado com sucesso!");
       return data.name;
     } catch (error) {
       toast.error(

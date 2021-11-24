@@ -2,9 +2,21 @@ import Head from "next/head";
 import React, { useEffect } from "react";
 import Title from "ui/components/Title/Title";
 import { ImageContainer } from "ui/components/Welcome/welcome.style";
+import { useCookies } from "react-cookie";
 
 const Bye = () => {
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "@target:token",
+    "@target:user",
+  ]);
+
+  function handleRemoveCookie() {
+    removeCookie("@target:token");
+    removeCookie("@target:user");
+  }
+
   const logout = () => {
+    handleRemoveCookie();
     setTimeout(() => {
       localStorage.removeItem("@taget:token");
       localStorage.removeItem("user");
@@ -18,7 +30,7 @@ const Bye = () => {
   return (
     <div style={{ margin: "auto 0", marginTop: "100px" }}>
       <Title
-        title={"Agradeçomos sua visita!"}
+        title={"Agradecemos sua visita!"}
         subtitle={"Obrigado por usar nossa plataforma."}
       ></Title>
       <Head>
@@ -28,7 +40,7 @@ const Bye = () => {
       <ImageContainer>
         <img
           src="welcome.png"
-          alt="Agradeçomos sua visita"
+          alt="Agradecemos sua visita"
           height="300px"
           width="auto"
           text-align="center"
