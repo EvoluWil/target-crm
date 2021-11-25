@@ -2,10 +2,11 @@ import { Avatar, Card } from "@material-ui/core";
 import { experimentalStyled as styled } from "@material-ui/core/styles";
 
 export const DealCardContainer = styled(Card)`
+  cursor: pointer;
   display: grid;
   grid-template-columns: 28px 1fr 15px;
   width: 100%;
-  padding: ${({ theme }) => theme.spacing(1)};
+  padding: ${({ theme }) => theme.spacing(2)};
   gap: ${({ theme }) => theme.spacing(0.2) + " " + theme.spacing(0.5)};
   margin: ${({ theme }) => theme.spacing(1)} 0;
   box-shadow: 4px 4px rgba(0, 0, 0, 0.05);

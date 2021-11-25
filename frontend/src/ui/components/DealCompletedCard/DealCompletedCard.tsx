@@ -31,9 +31,9 @@ const DealCompletedCard: React.FC<DealCardProps> = (props) => {
   const iconTag = useMemo(() => {
     switch (props.status) {
       case "WON":
-        return { icon: "thumbs-o-up", color: "#03f518" };
+        return { icon: "thumbs-up", color: "#03f518" };
       case "LOST":
-        return { icon: "thumbs-o-down", color: "#e63706" };
+        return { icon: "thumbs-down", color: "#e63706" };
       case "ARCHIVED":
         return { icon: "archive", color: "#01306e" };
       default:
@@ -67,7 +67,7 @@ const DealCompletedCard: React.FC<DealCardProps> = (props) => {
           </DealStartDateStyled>
         </DealFooterContainer>
       </DealDescriptionContainer>
-      {iconTag.icon === "thumbs-o-up" && (
+      {iconTag.icon === "thumbs-up" && (
         <Tooltip
           title="Ganha"
           placement="top-start"
@@ -82,7 +82,7 @@ const DealCompletedCard: React.FC<DealCardProps> = (props) => {
           />
         </Tooltip>
       )}
-      {iconTag.icon === "thumbs-o-down" && (
+      {iconTag.icon === "thumbs-down" && (
         <Tooltip
           title="Perdida"
           placement="top-start"
