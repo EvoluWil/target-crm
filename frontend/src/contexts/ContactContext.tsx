@@ -14,6 +14,8 @@ export const ContactProvider: React.FC = ({ children }) => {
   const [hasError, setError] = useState("");
   const [isLoading, setLoading] = useState(false);
 
+  const [persistedContactsLists, setPersistedContactsLists] = useState<IContact[]>();
+
   const [contacts, setContacts] = useState<IContact[]>();
 
   const useCreateContactModal = () => {
@@ -67,6 +69,44 @@ export const ContactProvider: React.FC = ({ children }) => {
     }
   };
 
+  const filteredContact = async (
+    terms: string,
+    typeValue: string,
+    resetFilter: boolean
+  ) => {
+    let list = contacts;
+    setPersistedContactsLists(contacts)
+    if (resetFilter) list = persistedContactsLists;
+    let filtered = [];
+    setContacts([]);
+
+    const applyFilter = {
+      name: () => {
+        filtered = list.filter((contact) =>
+          contact.name.toLowerCase().includes(terms.toLocaleLowerCase())
+        );
+      },
+      city: () => {
+        filtered = list.filter((contact) =>
+          contact?.city.toLowerCase().includes(terms.toLocaleLowerCase())
+        );
+      },
+      state: () => {
+        filtered = list.filter((contact) =>
+          contact?.state.toLowerCase().includes(terms.toLocaleLowerCase())
+        );
+      },
+    };
+
+    applyFilter[typeValue];
+
+    setContacts(filtered);
+  };
+
+  const removeFiltered = () => {
+    setContacts(persistedContactsLists);
+  };
+
   useEffect(() => {
     if (!contacts?.length) getContacts();
   }, []);
@@ -85,6 +125,8 @@ export const ContactProvider: React.FC = ({ children }) => {
         sendImportedContacts,
         contacts,
         getContacts,
+        filteredContact,
+        removeFiltered,
         isLoading,
         hasError,
       }}

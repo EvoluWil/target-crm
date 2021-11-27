@@ -38,7 +38,7 @@ export const useCompanyPage = () => {
     } catch (err) {
       setLoading(false);
       setError(
-        "Não foi possivel buscar empresas, verifique sua conexão e tente novamente"
+        "Não foi possivel buscar as empresas, verifique sua conexão e tente novamente"
       );
     }
   };
@@ -46,14 +46,19 @@ export const useCompanyPage = () => {
   const filteredCompany = async (terms: string, typeValue: string) => {
     let filtered = [];
     if (typeValue === "name") {
-      filtered = companies.filter((company) =>
+      filtered = companies.filter((company: CompanyTypes) =>
         company.name.toLowerCase().includes(terms.toLocaleLowerCase())
       );
-    } else {
-      filtered = companies.filter((company) =>
+    } else if (typeValue === "city") {
+      filtered = companies.filter((company: CompanyTypes) =>
         company?.city.toLowerCase().includes(terms.toLocaleLowerCase())
       );
+    } else {
+      filtered = companies.filter((company: CompanyTypes) =>
+        company?.state.toLowerCase().includes(terms.toLocaleLowerCase())
+      );
     }
+
     setCompanies(filtered);
   };
 
